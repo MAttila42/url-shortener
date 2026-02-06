@@ -1,0 +1,71 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "URL Shortener",
+    "version": "1.0.0",
+    "description": ""
+  },
+  "servers": [
+    {
+      "url": "{{base}}"
+    }
+  ],
+  "paths": {
+    "/{id}": {
+      "get": {
+        "summary": "Open URL",
+        "responses": {}
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "deprecated": false,
+          "schema": {}
+        }
+      ]
+    },
+    "/": {
+      "post": {
+        "summary": "Create URL",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "deprecated": false,
+            "schema": {},
+            "example": "bearer QCIyIZaZ6HnD5pQ9fok8T6ai"
+          }
+        ],
+        "responses": {},
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "ttl": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              },
+              "example": {
+                "url": "https://example.com",
+                "ttl": 1800000
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
