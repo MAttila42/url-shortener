@@ -2,7 +2,7 @@ import type { Env } from 'bun'
 import type { Context } from 'elysia'
 import * as crypto from 'node:crypto'
 import cors from '@elysiajs/cors'
-import { eq } from 'drizzle-orm'
+import { eq, lt } from 'drizzle-orm'
 import { Elysia, redirect, t } from 'elysia'
 import { db } from './db'
 import { Urls } from './db/schema'
@@ -34,6 +34,8 @@ const app = new Elysia({
       await db.delete(Urls).where(eq(Urls.id, id))
       return status(404)
     }
+
+    (async () => await db.delete(Urls).where(lt(Urls.ttl, new Date())))()
 
     return redirect(result.url)
   })
