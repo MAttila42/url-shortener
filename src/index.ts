@@ -1,7 +1,22 @@
 import type { Env } from 'bun'
 import type { Context } from 'elysia'
+import * as crypto from 'node:crypto'
 import cors from '@elysiajs/cors'
-import { Elysia } from 'elysia'
+import { eq } from 'drizzle-orm'
+import { Elysia, t } from 'elysia'
+import { db } from './db'
+import { Urls } from './db/schema'
+
+async function createId() {
+  let id
+  let exists
+  do {
+    id = crypto.randomBytes(3).toString('base64url')
+    const [result] = await db.select().from(Urls).where(eq(Urls.id, id))
+    exists = !!result
+  } while (exists)
+  return id
+}
 
 const app = new Elysia({
   strictPath: false,
@@ -9,6 +24,20 @@ const app = new Elysia({
 })
   .use(cors())
   .get('/', () => 'Hello Elysia')
+  .post('/', async ({ body, status, request }) => {
+    const [{ insertedId }] = await db.insert(Urls).values({
+      id: await createId(),
+      url: body.url,
+      ttl: new Date(Date.now() + body.ttl),
+    }).returning({ insertedId: Urls.id })
+    const url = new URL(request.url)
+    return status(201, `${url.origin}/${insertedId}`)
+  }, {
+    body: t.Object({
+      url: t.String(),
+      ttl: t.Number(),
+    }),
+  })
 
 export default {
   async fetch(

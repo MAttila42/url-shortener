@@ -8,6 +8,3 @@ export const Urls = sqliteTable('urls', {
   createdAt: integer('created_at', { mode: 'timestamp' })
     .default(sql`(current_timestamp)`),
 })
-
-export type SelectUrl = typeof Urls.$inferSelect
-export type InsertUrl = typeof Urls.$inferInsert
