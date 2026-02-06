@@ -1,0 +1,33 @@
+{
+  "name": "url-shortener",
+  "type": "module",
+  "module": "src/index.js",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "preview": "wrangler dev --local src/index.ts --port 3000",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:setup": "bun run ./scripts/setup-db.ts",
+    "rdb:push": "NODE_ENV=production drizzle-kit push",
+    "rdb:studio": "NODE_ENV=production drizzle-kit studio",
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "lint": "eslint . --fix",
+    "update": "taze -wr latest"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.4.1",
+    "@libsql/client": "^0.17.0",
+    "drizzle-orm": "^0.45.1",
+    "elysia": "latest"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^7.2.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260206.1",
+    "bun-types": "latest",
+    "drizzle-kit": "^0.31.8",
+    "eslint": "^9.39.2",
+    "taze": "^19.9.2",
+    "tsx": "^4.21.0",
+    "wrangler": "^4.63.0"
+  }
+}
