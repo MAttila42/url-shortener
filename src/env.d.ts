@@ -4,6 +4,6 @@ declare module 'bun' {
     DATABASE_URL_LOCAL: string
     DATABASE_URL_REMOTE: string
     DATABASE_AUTH_TOKEN: string
-    AUTH_SECRET: string
+    API_KEY: string
   }
 }

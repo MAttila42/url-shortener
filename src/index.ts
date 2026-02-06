@@ -1,6 +1,7 @@
 import type { Env } from 'bun'
 import type { Context } from 'elysia'
 import * as crypto from 'node:crypto'
+import process from 'node:process'
 import cors from '@elysiajs/cors'
 import { and, eq, lt, ne } from 'drizzle-orm'
 import { Elysia, redirect, t } from 'elysia'
@@ -43,7 +44,12 @@ const app = new Elysia({
 
     return redirect(result.url)
   })
-  .post('/', async ({ body, status, request }) => {
+  .post('/', async ({ body, headers, status, request }) => {
+    if (!headers.authorization
+      || !headers.authorization.startsWith('bearer ')
+      || headers.authorization.split(' ')[1] !== process.env.API_KEY)
+      return status(401)
+
     const ttl = body.ttl
       ? new Date(Date.now() + body.ttl)
       : new Date (0)
@@ -59,6 +65,11 @@ const app = new Elysia({
     body: t.Object({
       url: t.String(),
       ttl: t.Optional(t.Number()),
+    }),
+    headers: t.Object({
+      authorization: t.String(),
+    }, {
+      additionalProperties: true,
     }),
   })
 
