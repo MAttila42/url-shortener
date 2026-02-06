@@ -4,8 +4,7 @@ import * as crypto from 'node:crypto'
 import cors from '@elysiajs/cors'
 import { and, eq, lt, ne } from 'drizzle-orm'
 import { Elysia, redirect, t } from 'elysia'
-import { db } from './db'
-import { Urls } from './db/schema'
+import { db, Urls } from './db'
 
 async function createId() {
   let id

@@ -5,7 +5,7 @@ const isDev = process.env.NODE_ENV !== 'production'
 
 export default defineConfig({
   out: './drizzle',
-  schema: './src/db/schema.ts',
+  schema: './src/db.ts',
   dialect: 'turso',
   dbCredentials: {
     url: isDev
