@@ -3,7 +3,7 @@ import type { Context } from 'elysia'
 import * as crypto from 'node:crypto'
 import cors from '@elysiajs/cors'
 import { eq } from 'drizzle-orm'
-import { Elysia, t } from 'elysia'
+import { Elysia, redirect, t } from 'elysia'
 import { db } from './db'
 import { Urls } from './db/schema'
 
@@ -23,7 +23,20 @@ const app = new Elysia({
   aot: false,
 })
   .use(cors())
-  .get('/', () => 'Hello Elysia')
+  .get('/:id', async ({ params: { id }, status }) => {
+    const [result] = await db.select().from(Urls).where(eq(Urls.id, id))
+
+    if (!result)
+      return status(404)
+
+    const ttl = Number(result.ttl)
+    if (ttl !== 0 && ttl < Date.now()) {
+      await db.delete(Urls).where(eq(Urls.id, id))
+      return status(404)
+    }
+
+    return redirect(result.url)
+  })
   .post('/', async ({ body, status, request }) => {
     const [{ insertedId }] = await db.insert(Urls).values({
       id: await createId(),
