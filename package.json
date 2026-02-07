@@ -11,6 +11,7 @@
     "rdb:push": "NODE_ENV=production drizzle-kit push",
     "rdb:studio": "NODE_ENV=production drizzle-kit studio",
     "deploy": "NODE_ENV=production wrangler deploy --minify src/index.ts",
+    "url": "bun run ./scripts/add-url.ts",
     "lint": "eslint . --fix",
     "update": "taze -wr latest"
   },
