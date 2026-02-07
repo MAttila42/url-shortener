@@ -3,7 +3,7 @@ import { sql } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/libsql'
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
-const isDev = process.env.NODE_ENV !== 'development'
+const isDev = process.env.NODE_ENV !== 'production'
 
 export const db = drizzle({
   connection: {
