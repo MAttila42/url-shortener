@@ -4,13 +4,13 @@
   "module": "src/index.js",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "preview": "wrangler dev --local src/index.ts --port 3000",
+    "preview": "NODE_ENV=production wrangler dev --local src/index.ts --port 3000",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:setup": "bun run ./scripts/setup-db.ts",
     "rdb:push": "NODE_ENV=production drizzle-kit push",
     "rdb:studio": "NODE_ENV=production drizzle-kit studio",
-    "deploy": "wrangler deploy --minify src/index.ts",
+    "deploy": "NODE_ENV=production wrangler deploy --minify src/index.ts",
     "lint": "eslint . --fix",
     "update": "taze -wr latest"
   },
