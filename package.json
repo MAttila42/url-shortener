@@ -4,7 +4,7 @@
   "module": "src/index.js",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "preview": "NODE_ENV=production wrangler dev --local src/index.ts --port 3000",
+    "preview": "wrangler dev --env production --local src/index.ts --port 3000",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:setup": "bun run ./scripts/setup-db.ts",
