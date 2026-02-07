@@ -4,7 +4,7 @@ import * as crypto from 'node:crypto'
 import process from 'node:process'
 import cors from '@elysiajs/cors'
 import { and, eq, lt, ne } from 'drizzle-orm'
-import { Elysia, redirect, t } from 'elysia'
+import { Elysia, t } from 'elysia'
 import { db, Urls } from './db'
 
 async function createId() {
@@ -42,7 +42,12 @@ const app = new Elysia({
         ne(Urls.ttl, new Date(0)),
       )))()
 
-    return redirect(result.url)
+    return new Response(null, {
+      status: 308,
+      headers: {
+        Location: result.url,
+      },
+    })
   })
   .post('/', async ({ body, headers, status, request }) => {
     if (!headers.authorization
